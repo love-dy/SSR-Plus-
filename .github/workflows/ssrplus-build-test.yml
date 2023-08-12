@@ -74,7 +74,9 @@ jobs:
           mkdir ssrplus
           cp bin/packages/${{ matrix.arch }}/packages_ci/*.ipk ./ssrplus || true
           echo "FIRMPATH=$PWD" >> $GITHUB_ENV
-          tar -czvf ${{matrix.arch}}-packages_${{env.date1}}.tar.gz ./ssrplus
+          
+          cd ssrplus
+          tar -czvf ./${{matrix.arch}}-packages_${{env.date1}}.tar.gz *.ipk
 
       - name: Collect metadata
         run: |
