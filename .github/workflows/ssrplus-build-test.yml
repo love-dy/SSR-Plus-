@@ -113,7 +113,7 @@ jobs:
           cat PKG-INFO
             
       - name: Release packages
-        uses: softprops/action-gh-release@master
+        uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{env.ARCHIVE_NAME}}_${{env.date1}}
           files: ${{ env.FIRMPATH }}/*.tar.gz
