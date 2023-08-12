@@ -3,7 +3,7 @@
 # Description: Build SSR-Plus+
 #
 
-name: Sync&Build SSR-Plus+
+name: Build SSR-Plus+
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
