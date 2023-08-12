@@ -1,0 +1,125 @@
+#
+# Copyright (c) 2019-2021 P3TERX <https://p3terx.com>
+#
+# This is free software, licensed under the MIT License.
+# See /LICENSE for more information.
+#
+# https://github.com/P3TERX/Actions-OpenWrt
+# File: .github/workflows/update-checker.yml
+# Description: Source code update checker
+#
+
+name: Update Checker
+
+env:
+  LEDE_URL: https://github.com/coolsnowwolf/lede
+  LEDE_BRANCH: master
+  
+  PASSWALL_URL: https://github.com/xiaorouji/openwrt-passwall
+  PASSWALL_BRANCH: packages
+
+
+on:
+  #push:
+  #  paths:
+  #    - '.github/workflows/update-checker.yml'
+  #    - '.github/workflows/OWRT-CORE.yml'
+  #自动触发：每天早上4点(UTC 20:00) --分 时 日 月 周
+  schedule:
+    - cron: 0 20 * * *    
+  #手动触发
+  workflow_dispatch:
+
+jobs:
+  check_lede_hash:
+    runs-on: ubuntu-latest
+    outputs:
+      lede_update: ${{ steps.value_lede.outputs.lede_update }}
+    steps:
+    
+    - name: Get Lede Hash
+      id: get_ledeHash
+      run: |
+        git clone --depth 1 $LEDE_URL -b $LEDE_BRANCH .
+        echo "{ledeHash}={git rev-parse HEAD}" >> $GITHUB_OUTPUT
+
+    - name: Compare Lede Hash
+      id: cache_ledeHash
+      uses: actions/cache@v3
+      with:
+        path: .ledeHash
+        key: HEAD-${{ steps.get_ledeHash.outputs.ledeHash }}
+
+    - name: Save New Lede Hash
+      id: value_lede
+      if: steps.cache_ledeHash.outputs.cache-hit != 'true'
+      run: |
+        echo ${{ steps.get_ledeHash.outputs.ledeHash }} | tee .ledeHash
+        
+        lede_update='true'
+        echo "lede_update=${lede_update}" >> $GITHUB_OUTPUT
+        echo "lede_update: ${lede_update}"
+        
+  check_passwall_hash:
+    # needs: check_lede_hash
+    # if: needs.check_lede_hash.outputs.lede_update != 'true'
+    runs-on: ubuntu-latest
+    outputs:
+      passwall_update: ${{ steps.value_passwall.outputs.passwall_update }}  
+    steps:
+    
+    - name: Get Passwall Hash
+      id: get_passwallHash
+      run: |
+        git clone --depth 1 $PASSWALL_URL -b $PASSWALL_BRANCH .
+        echo "{passwallHash}={git rev-parse HEAD}" >> $GITHUB_OUTPUT
+
+    - name: Compare Passwall Hash
+      id: cache_passwallHash
+      uses: actions/cache@v3
+      with:
+        path: .passwallHash
+        key: HEAD-${{ steps.get_passwallHash.outputs.passwallHash }}
+
+    - name: Save New Passwall Hash
+      id: value_passwall
+      if: steps.cache_passwallHash.outputs.cache-hit != 'true'
+      run: |
+        echo ${{ steps.get_passwallHash.outputs.passwallHash }} | tee .passwallHash
+        
+        passwall_update='true'
+        echo "passwall_update=${passwall_update}" >> $GITHUB_OUTPUT
+        echo "passwall_update: ${passwall_update}"
+
+  start_build:
+    needs: [check_lede_hash, check_passwall_hash]
+    if: needs.check_lede_hash.outputs.lede_update == 'true' || needs.check_passwall_hash.outputs.passwall_update == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write         
+    steps:
+
+    - name: Trigger Build
+      uses: peter-evans/repository-dispatch@v2
+      with:
+        token: ${{ secrets.ACCESS_TOKEN }}
+        event-type: Source Code Update
+
+    - name: Delete Old Workflows    
+      uses: Mattraks/delete-workflow-runs@v2
+      with:
+        token: ${{ github.token }}
+        repository: ${{ github.repository }}
+        #计算到目前为止每个工作流已保留的天数, 达到指定的天数工作流将被删除
+        retain_days: 1
+        #为每个工作流保留的最少运行次数
+        keep_minimum_runs: 0  
+
+       
+    
+
+        
+        
+        
+#  ########################################################
+

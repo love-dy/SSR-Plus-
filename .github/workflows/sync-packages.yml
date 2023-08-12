@@ -1,3 +1,8 @@
+#
+# Copyright (c) 2022-2023 helloworld <https://github.com/fw876/helloworld>
+# Description: Build SSR-Plus+
+#
+
 name: Sync Packages
 
 on:
@@ -5,9 +10,9 @@ on:
   #  paths:
   #    - '.github/workflows/wall-test.yml'
   #    - '.github/diy/main.sh'
-  #schedule:
-  #  - cron: 0 */8 * * *
-  #repository_dispatch:
+  schedule:
+    - cron: 0 */8 * * *
+
   workflow_dispatch:
     inputs:
       packages:
