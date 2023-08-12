@@ -30,7 +30,7 @@ jobs:
   check_ssr_hash:
     runs-on: ubuntu-latest
     outputs:
-      ssr_update: ${{ steps.value_lede.outputs.lede_update }}
+      ssr_update: ${{ steps.value_ssr.outputs.lede_update }}
     steps:
     
     - name: Get SSR Hash
@@ -47,7 +47,7 @@ jobs:
         key: HEAD-${{ steps.get_ssrHash.outputs.ssrHash }}
 
     - name: Save New SSR Hash
-      id: value_lede
+      id: value_ssr
       if: steps.cache_ssrHash.outputs.cache-hit != 'true'
       run: |
         echo ${{ steps.get_ssrHash.outputs.ssrHash }} | tee .ssrHash
