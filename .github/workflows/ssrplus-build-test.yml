@@ -5,6 +5,9 @@
 
 name: Build SSR-Plus+
 
+env:
+  GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
+
 on:
   workflow_dispatch:
  
