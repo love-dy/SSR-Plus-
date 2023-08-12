@@ -74,12 +74,10 @@ jobs:
 
       - name: Move created packages to project dir
         run: | 
-          mkdir ssrplus
-          cp bin/packages/${{ matrix.arch }}/packages_ci/*.ipk ./ssrplus || true
+          mkdir ssrp
+          cp bin/packages/${{ matrix.arch }}/packages_ci/*.ipk ./ssrp || true
           echo "FIRMPATH=$PWD" >> $GITHUB_ENV
-          
-          cd ssrplus
-          tar -czvf ./${{matrix.arch}}-packages_${{env.date1}}.tar.gz *.ipk
+          tar -czvf ./${{matrix.arch}}-packages_${{env.date1}}.tar.gz ./ssrp
 
       - name: Collect metadata
         run: |
