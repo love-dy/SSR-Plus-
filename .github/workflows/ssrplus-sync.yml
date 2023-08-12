@@ -5,14 +5,11 @@
 
 name: Sync Packages
 
-on:
-  #push:
-  #  paths:
-  #    - '.github/workflows/wall-test.yml'
-  #    - '.github/diy/main.sh'
-  #schedule:
-  #  - cron: 0 */8 * * *
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  REPO_TOKEN: ${{ secrets.ACCESS_TOKEN }} 
 
+on:
   workflow_dispatch:
     inputs:
       packages:
@@ -23,7 +20,7 @@ on:
 permissions: write-all        
 
 jobs:
-  sync_packages:
+  sync_ssrp:
     runs-on: ubuntu-latest
     name: Update ${{matrix.target}}
     strategy:
@@ -75,7 +72,15 @@ jobs:
           exit 0
         fi || exit 0
 
-
+    - name: Delete Old Workflows    
+      uses: Mattraks/delete-workflow-runs@v2
+      with:
+        token: ${{ github.token }}
+        repository: ${{ github.repository }}
+        #计算到目前为止每个工作流已保留的天数, 达到指定的天数工作流将被删除
+        retain_days: 1
+        #为每个工作流保留的最少运行次数
+        keep_minimum_runs: 0  
 
 
 
