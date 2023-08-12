@@ -32,12 +32,6 @@ jobs:
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-
-    - name: Init environment
-      run : |
-        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-        git config --global user.name "github-actions[bot]"
-        sudo timedatectl set-timezone "Asia/Shanghai"
         
     - name: Clone packages
       run: |
@@ -125,7 +119,7 @@ jobs:
         echo "Building $PACKAGES"
         echo "PACKAGES=$PACKAGES" >> $GITHUB_ENV
           
-    - name: Build
+    - name: Build ssr-plus+
       uses: immortalwrt/gh-action-sdk@v4.1     
       env:
         ARCH: ${{ matrix.arch }}-${{ env.BRANCH }}
