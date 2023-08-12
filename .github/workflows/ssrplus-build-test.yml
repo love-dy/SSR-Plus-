@@ -10,6 +10,11 @@ env:
 
 on:
   workflow_dispatch:
+    inputs:
+      packages:
+        description: 'packages'
+        required: false
+        default: 'false'
  
 jobs:
   build:
@@ -117,7 +122,9 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{env.ARCHIVE_NAME}}_${{env.date1}}
-          files: ${{ env.FIRMPATH }}/*.tar.gz
+          files: | 
+            ${{ env.FIRMPATH }}/*.tar.gz
+            PKG-INFO
           body: |
             这是SSR Plus+升级包，内含多个设备！
             请选择你需要的升级包！
