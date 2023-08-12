@@ -5,9 +5,6 @@
 
 name: Build SSR-Plus+
 
-env:
-  GITHUB_TOKEN: ${{secrets.ACCESS_TOKEN}}
-
 on:
   workflow_dispatch:
     inputs:
@@ -15,9 +12,8 @@ on:
         description: 'packages'
         required: false
         default: 'false'
-        
-  workflow_call:
- 
+
+  
 jobs:
   build:
     name: Build ${{ matrix.arch }}
@@ -124,6 +120,8 @@ jobs:
             
       - name: Release packages
         uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{env.ARCHIVE_NAME}}_${{env.date1}}
           files: | 

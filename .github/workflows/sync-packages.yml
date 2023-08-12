@@ -63,8 +63,8 @@ jobs:
         bash /$GITHUB_WORKSPACE/.github/diy/Modify.sh
 
     - name: Upload packages
-      env: 
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      #env: 
+      #  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       run: |
         if [ -e $GITHUB_WORKSPACE/LICENSE ]; then
           cp $GITHUB_WORKSPACE/LICENSE $GITHUB_WORKSPACE/${{matrix.target}}
@@ -82,7 +82,7 @@ jobs:
           exit 0
         fi || exit 0
         
-    - name: Build
+    - name: Start Build
       uses: ./.github/workflows/ssrplue-build.yml
 
     - name: Delete workflow runs
