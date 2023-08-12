@@ -58,7 +58,7 @@ jobs:
 
   start_sync:
     needs: [check_ssr_hash]
-    if: needs.check_ssr_hash.outputs.ssr_update == 'true'
+    #if: needs.check_ssr_hash.outputs.ssr_update == 'true'
     runs-on: ubuntu-latest
     permissions:
       actions: write         
