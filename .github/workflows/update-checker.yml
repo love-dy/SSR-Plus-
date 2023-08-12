@@ -36,8 +36,8 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       ssr_update: ${{ steps.value_ssr.outputs.lede_update }}
-    steps:
-    
+      
+    steps:    
     - name: Get SSR Hash
       id: get_ssrHash
       run: |
@@ -61,12 +61,12 @@ jobs:
         echo "ssr_update=${ssr_update}" >> $GITHUB_OUTPUT
         echo "ssr_update: ${ssr_update}"
 
-  start_sync_build:
+  ssr_sync_build:
     needs: [check_ssr_hash]
     if: needs.check_ssr_hash.outputs.ssr_update == 'true'
-    runs-on: ubuntu-latest      
+    runs-on: ubuntu-latest
+    
     steps:
-
     - name: Trigger Sync
       uses: peter-evans/repository-dispatch@v2
       with:
