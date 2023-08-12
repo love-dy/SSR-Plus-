@@ -15,6 +15,8 @@ on:
         description: 'packages'
         required: false
         default: 'false'
+        
+  workflow_call:
  
 jobs:
   build:
@@ -138,14 +140,7 @@ jobs:
           keep_latest: 6
           #删除与旧版本关联的标签, 没有任何关联版本的旧标签不会被删除
           delete_tags: true
-            
-      - name: Delete old workflows    
-        uses: Mattraks/delete-workflow-runs@v2
-        with:
-          token: ${{ github.token }}
-          repository: ${{ github.repository }}
-          retain_days: 1
-          keep_minimum_runs: 0
+
           
           
 #  #########################################################
