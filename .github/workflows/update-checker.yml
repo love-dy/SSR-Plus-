@@ -26,6 +26,8 @@ on:
   #手动触发
   workflow_dispatch:
 
+permissions: write-all
+
 jobs:
   check_ssr_hash:
     runs-on: ubuntu-latest
