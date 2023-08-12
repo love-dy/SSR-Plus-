@@ -12,9 +12,6 @@ on:
   #    - '.github/diy/main.sh'
   #schedule:
   #  - cron: 0 */8 * * *
-  
-  #自动触发,有更新时触发SYNC...
-  repository_dispatch: 
 
   workflow_dispatch:
     inputs:
@@ -77,9 +74,13 @@ jobs:
           echo "nothing to commit"
           exit 0
         fi || exit 0
+
+
+
+
+
         
-    - name: Start Build
-      uses: ./.github/workflows/ssrplue-build.yml
+#  #########################################################
 
 
 
