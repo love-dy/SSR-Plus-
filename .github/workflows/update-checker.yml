@@ -12,6 +12,7 @@
 name: Update Checker
 
 env:
+  REPO_TOKEN: ${{ secrets.ACCESS_TOKEN }}
   SSR_URL: https://github.com/fw876/helloworld
   SSR_BRANCH: master
 
@@ -61,9 +62,7 @@ jobs:
   start_sync:
     needs: [check_ssr_hash]
     #if: needs.check_ssr_hash.outputs.ssr_update == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write         
+    runs-on: ubuntu-latest      
     steps:
 
     - name: Trigger Sync

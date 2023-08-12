@@ -21,15 +21,13 @@ on:
       packages:
         description: 'packages'
         required: false
-        default: 'false'	
+        default: 'false'
+
+permissions: write-all        
 
 jobs:
   sync_packages:
-    if: github.event.repository.owner.id == github.event.sender.id || ! github.event.sender.id
     runs-on: ubuntu-latest
-    permissions:
-      actions: write 
-
     name: Update ${{matrix.target}}
     strategy:
       fail-fast: false
@@ -63,8 +61,6 @@ jobs:
         bash /$GITHUB_WORKSPACE/.github/diy/Modify.sh
 
     - name: Upload packages
-      #env: 
-      #  ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       run: |
         if [ -e $GITHUB_WORKSPACE/LICENSE ]; then
           cp $GITHUB_WORKSPACE/LICENSE $GITHUB_WORKSPACE/${{matrix.target}}

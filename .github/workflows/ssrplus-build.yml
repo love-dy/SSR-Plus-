@@ -12,15 +12,13 @@ on:
         description: 'packages'
         required: false
         default: 'false'
-
+        
+permissions: write-all
   
 jobs:
-  build:
+  build_ssr:
     name: Build ${{ matrix.arch }}
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-      
+    runs-on: ubuntu-latest      
     strategy:
       fail-fast: false
       matrix:
@@ -120,8 +118,6 @@ jobs:
             
       - name: Release packages
         uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{env.ARCHIVE_NAME}}_${{env.date1}}
           files: | 
