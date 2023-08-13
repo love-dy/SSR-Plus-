@@ -4,6 +4,7 @@
 #
 
 name: Sync
+run-name: Sync SSR-Plus+
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

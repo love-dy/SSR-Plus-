@@ -4,6 +4,7 @@
 #
 
 name: Sync & Build
+run-name: Sync & Build SSR-Plus+
 
 on:
   #自动触发,有更新时触发SYNC...
