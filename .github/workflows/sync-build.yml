@@ -68,7 +68,7 @@ jobs:
 
   build_ssrp:
     name: Build ${{ matrix.arch }}
-    needs: [sync_packages]
+    needs: [sync_ssrp]
     runs-on: ubuntu-latest      
     strategy:
       fail-fast: false
