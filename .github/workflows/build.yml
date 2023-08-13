@@ -5,6 +5,8 @@
 
 name: Build SSR-Plus+
 
+run-name: Build
+
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   REPO_TOKEN: ${{ secrets.ACCESS_TOKEN }}   
