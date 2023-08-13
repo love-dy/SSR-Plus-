@@ -133,6 +133,7 @@ jobs:
         body: |
           这是SSR Plus+升级包，内含多个设备！
           请选择你需要的升级包！
+          opkg install *.ipk --force-reinstall
 
     - name: Delete old releases
       uses: dev-drprasad/delete-older-releases@v0.2.1      
