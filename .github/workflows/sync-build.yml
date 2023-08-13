@@ -67,7 +67,7 @@ jobs:
         fi || exit 0
 
   build_ssrp:
-    name: Build ${{ matrix.arch }}
+    name: Build ${{matrix.arch}}.${{matrix.branch}}
     needs: [sync_ssrp]
     runs-on: ubuntu-latest      
     strategy:
