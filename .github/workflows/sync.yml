@@ -23,7 +23,7 @@ permissions: write-all
 jobs:
   sync_ssrp:
     runs-on: ubuntu-latest
-    name: Update ${{matrix.branch}}
+    name: Sync ${{matrix.branch}}
     strategy:
       fail-fast: false
       matrix:

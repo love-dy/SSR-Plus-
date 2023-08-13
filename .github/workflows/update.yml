@@ -9,15 +9,14 @@
 # Description: Source code update checker
 #
 
-name: Update
-run-name: Update Packages
+name: Check
+run-name: Check Packages
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   REPO_TOKEN: ${{ secrets.ACCESS_TOKEN }} 
   
   SSR_URL: https://github.com/fw876/helloworld
-  SSR_BRANCH: master
 
 on:
   #push:
@@ -35,6 +34,11 @@ permissions: write-all
 jobs:
   check_ssr_hash:
     runs-on: ubuntu-latest
+    name: Check ${{matrix.branch}}
+    strategy:
+      fail-fast: false
+      matrix:
+        branch: [master]
     outputs:
       ssr_update: ${{ steps.save_ssrHash.outputs.ssr_update }}
       
@@ -42,7 +46,7 @@ jobs:
     - name: Get SSR Hash
       id: get_ssrHash
       run: |
-        git clone --depth 1 $SSR_URL -b $SSR_BRANCH .
+        git clone --depth 1 $SSR_URL -b ${{matrix.branch}} .
         echo "{ssrHash}={git rev-parse HEAD}" >> $GITHUB_OUTPUT
 
     - name: Compare SSR Hash
