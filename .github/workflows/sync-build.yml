@@ -22,11 +22,11 @@ permissions: write-all
 jobs:
   sync_ssrp:
     runs-on: ubuntu-latest
-    name: Update ${{matrix.target}}
+    name: Update ${{matrix.branch}}
     strategy:
       fail-fast: false
       matrix:
-        target: [master]
+        branch: [master]
         
     steps:
     - name: Checkout
@@ -38,9 +38,9 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE
         chmod +x .github/diy/main.sh
-        git clone -b ${{matrix.target}} https://github.com/love-dy/openwrt-ssrplus.git ${{matrix.target}}
+        git clone -b ${{matrix.branch}} https://github.com/love-dy/openwrt-ssrplus.git ${{matrix.branch}}
         
-        cd ${{matrix.target}}
+        cd ${{matrix.branch}}
         git rm -r --cache * >/dev/null 2>&1 &
         rm -rf `find ./* -maxdepth 0 -type d ! -name "diy"` >/dev/null 2>&1
         $GITHUB_WORKSPACE/.github/diy/main.sh
@@ -51,16 +51,16 @@ jobs:
     - name: Upload packages
       run: |
         if [ -e $GITHUB_WORKSPACE/LICENSE ]; then
-          cp $GITHUB_WORKSPACE/LICENSE $GITHUB_WORKSPACE/${{matrix.target}}
+          cp $GITHUB_WORKSPACE/LICENSE $GITHUB_WORKSPACE/${{matrix.branch}}
         fi
         if [ -e $GITHUB_WORKSPACE/README.md ]; then
-          cp $GITHUB_WORKSPACE/README.md $GITHUB_WORKSPACE/${{matrix.target}}
+          cp $GITHUB_WORKSPACE/README.md $GITHUB_WORKSPACE/${{matrix.branch}}
         fi
-        cd $GITHUB_WORKSPACE/${{matrix.target}}
+        cd $GITHUB_WORKSPACE/${{matrix.branch}}
         if git status --porcelain | grep .; then
           git add .
           git commit -am "update $(date '+%Y-%m-%d %H:%M:%S')"
-          git push --quiet "https://${{ secrets.ACCESS_TOKEN }}@github.com/love-dy/openwrt-ssrplus.git" HEAD:${{matrix.target}}
+          git push --quiet "https://${{ secrets.ACCESS_TOKEN }}@github.com/love-dy/openwrt-ssrplus.git" HEAD:${{matrix.branch}}
         else
           echo "nothing to commit"
           exit 0
@@ -73,9 +73,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        arch:
-          - x86_64
-          - aarch64_generic
+        #arch:
+        #  - x86_64
+        #  - aarch64_generic
+        arch: [x86_64, aarch64_generic] 
+        branch: [master]  
           
     steps:
     - uses: actions/checkout@v3.5.3
@@ -93,7 +95,7 @@ jobs:
 
     - name: Determine branch name
       run: |
-        BRANCH="master"
+        BRANCH=${{matrix.branch}}
         echo "Building for $BRANCH"
         echo "BRANCH=$BRANCH" >> $GITHUB_ENV
 
@@ -123,15 +125,16 @@ jobs:
     - name: Build ssr-plus+
       uses: immortalwrt/gh-action-sdk@v4.2     
       env:
-        ARCH: ${{ matrix.arch }}-${{ env.BRANCH }}
-        FEEDNAME: packages_ci
+        #ARCH: ${{matrix.arch}}-${{env.BRANCH}}
+        ARCH: ${{matrix.arch}}
+        FEEDNAME: ssrp_packages
 
     - name: Move created packages to project dir
       run: | 
-        mkdir ssrp
-        cp bin/packages/${{ matrix.arch }}/packages_ci/*.ipk ssrp || true
+        mkdir upload
+        #cp bin/packages/${{ matrix.arch }}/packages_ci/*.ipk ssrp || true
+        zip -jr upload/ssrp_packages_ipk_${{matrix.arch}}.zip bin/packages/*/ssrp_packages/
         echo "FIRMPATH=$PWD" >> $GITHUB_ENV
-        tar -czvf ${{matrix.arch}}-packages_${{env.date1}}.tar.gz ssrp
 
     - name: Collect metadata
       run: |
@@ -172,7 +175,7 @@ jobs:
       with:
         tag_name: ${{env.ARCHIVE_NAME}}_${{env.date1}}
         files: | 
-          ${{ env.FIRMPATH }}/*.tar.gz
+          ${{ env.FIRMPATH }}/upload/*
           PKG-INFO
         body: |
           这是SSR Plus+升级包，内含多个设备！
