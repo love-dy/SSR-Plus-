@@ -31,7 +31,8 @@ jobs:
         #  - x86_64
         #  - aarch64_generic
         #arch: [x86_64, aarch64_generic]
-        target: [x86_64, aarch64_generic]  
+        target: [x86_64, aarch64_generic] 
+        branch: [master]        
           
     steps:
     - uses: actions/checkout@v3
@@ -49,7 +50,7 @@ jobs:
 
     - name: Determine branch name
       run: |
-        BRANCH="master"
+        BRANCH=${{matrix.branch}}
         echo "Building for $BRANCH"
         echo "BRANCH=$BRANCH" >> $GITHUB_ENV
 
