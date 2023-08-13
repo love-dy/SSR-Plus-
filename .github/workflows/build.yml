@@ -82,13 +82,13 @@ jobs:
       env:
         #ARCH: ${{matrix.target}}-${{env.BRANCH}}
         ARCH: ${{matrix.target}}
-        FEEDNAME: passwall_packages
+        FEEDNAME: ssrp_packages
 
     - name: Move created packages to project dir
       run: | 
         mkdir upload
         #cp bin/packages/${{ matrix.target }}/packages_ci/*.ipk ssrp || true
-        zip -jr upload/passwall_packages_ipk_${{matrix.target}}.zip bin/packages/*/passwall_packages/
+        zip -jr upload/ssrp_packages_ipk_${{matrix.target}}.zip bin/packages/*/ssrp_packages/
         echo "FIRMPATH=$PWD" >> $GITHUB_ENV
         #tar -czvf ${{matrix.target}}-packages_${{env.date1}}.tar.gz ssrp
 
