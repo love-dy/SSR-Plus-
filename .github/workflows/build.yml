@@ -22,7 +22,7 @@ permissions: write-all
   
 jobs:
   build_ssrp:
-    name: Build ${{ matrix.target }}
+    name: Build_${{matrix.target}}_${{matrix.branch}}-${{ env.BRANCH }}
     runs-on: ubuntu-latest      
     strategy:
       fail-fast: false
