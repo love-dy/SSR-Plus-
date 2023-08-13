@@ -3,9 +3,8 @@
 # Description: Build SSR-Plus+
 #
 
-name: Build SSR-Plus+
-
-run-name: Build
+name: Build
+run-name: Build SSR-Plus+
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
