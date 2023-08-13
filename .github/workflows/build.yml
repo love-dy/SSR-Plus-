@@ -35,7 +35,7 @@ jobs:
         branch: [master]        
           
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v3.5.3
       with:
         fetch-depth: 0
         token: ${{ secrets.ACCESS_TOKEN }} 
@@ -78,7 +78,7 @@ jobs:
         echo "PACKAGES=$PACKAGES" >> $GITHUB_ENV
           
     - name: Build ssr-plus+
-      uses: immortalwrt/gh-action-sdk@master     
+      uses: immortalwrt/gh-action-sdk@v4.2     
       env:
         #ARCH: ${{matrix.target}}-${{env.BRANCH}}
         ARCH: ${{matrix.target}}
@@ -90,7 +90,6 @@ jobs:
         #cp bin/packages/${{ matrix.target }}/packages_ci/*.ipk ssrp || true
         zip -jr upload/ssrp_packages_ipk_${{matrix.target}}.zip bin/packages/*/ssrp_packages/
         echo "FIRMPATH=$PWD" >> $GITHUB_ENV
-        #tar -czvf ${{matrix.target}}-packages_${{env.date1}}.tar.gz ssrp
 
     - name: Collect metadata
       run: |
@@ -136,7 +135,7 @@ jobs:
           请选择你需要的升级包！
 
     - name: Delete old releases
-      uses: dev-drprasad/delete-older-releases@master      
+      uses: dev-drprasad/delete-older-releases@v0.2.1      
       with:
         #要保留的最新版本的数量
         keep_latest: 6
@@ -144,7 +143,7 @@ jobs:
         delete_tags: true
         
     - name: Delete Old Workflows    
-      uses: Mattraks/delete-workflow-runs@v2
+      uses: Mattraks/delete-workflow-runs@v2.0.4
       with:
         token: ${{ github.token }}
         repository: ${{ github.repository }}
