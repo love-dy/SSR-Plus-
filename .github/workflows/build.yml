@@ -7,7 +7,7 @@ name: Build SSR-Plus+
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  REPO_TOKEN: ${{ secrets.ACCESS_TOKEN }} 
+  REPO_TOKEN: ${{ secrets.ACCESS_TOKEN }}   
 
 on:
   workflow_dispatch:
