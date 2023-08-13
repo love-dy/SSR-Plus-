@@ -10,7 +10,7 @@
 #
 
 name: Update
-run-name: Update SSR-Plus+
+run-name: Update Packages
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
